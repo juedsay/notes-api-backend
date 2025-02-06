@@ -1,0 +1,26 @@
+{
+  "name": "backendfullstackopen",
+  "version": "1.0.0",
+  "description": "Desarrollo de Backend Siguiendo curso de FullStack Open",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Julian Simon",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "eslint": "^9.19.0",
+    "globals": "^15.14.0",
+    "nodemon": "^3.1.9",
+    "standard": "^17.1.2"
+  },
+  "dependencies": {
+    "backendfullstackopen": "file:",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
