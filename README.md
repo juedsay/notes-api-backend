@@ -41,7 +41,7 @@ npm run test
 👤 **Julian Simon**
 
 * Website: https://www.linkedin.com/in/juedsay/
-* Twitter: [@https:\/\/x.com\/juedsaytv](https://twitter.com/https:\/\/x.com\/juedsaytv)
+* Twitter: [@juedsaytv](https://x.com/juedsaytv)
 * Github: [@juedsay](https://github.com/juedsay)
 * LinkedIn: [@juedsay](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/juedsay\/)
 
