@@ -1,94 +1,95 @@
-const express = require('express');
-const cors = require('cors');
+require("dotenv").config();
+require("./mongo");
+
+const express = require("express");
 const app = express();
-const logger = require('./loggerMiddleware');
+const cors = require("cors");
+const Note = require("./models/Note");
+
+const logger = require("./loggerMiddleware");
+const notFound = require("./middleware/notFound");
+const handleErrors = require("./middleware/handleErrors");
 
 app.use(express.json()); // Para realizar el parseo de los datos en formato JSON
 
 app.use(cors());
 app.use(logger);
 
-let notes = [
-    {
-        "id": 1,
-        "content": "HTML is easy",
-        "date": "2019-05-30T17:30:31.098Z",
-        "important": true
-    },
-    {
-        "id": 2,
-        "content": "Browser can execute only JavaScript",
-        "date": "2019-05-30T18:39:34.091Z",
-        "important": false
-    },
-    {
-        "id": 3,
-        "content": "GET and POST are the most important methods of HTTP protocol",
-        "date": "2019-05-30T19:20:14.298Z",
-        "important": true
-    }
-];
-
-// const app = http.createServer((req, res) => {
-//   res.writeHead(200, { 'Content-Type': 'application/json' });
-//   res.end(JSON.stringify(notes));
-// });
-
-app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>');
+app.get("/", (req, res) => {
+  res.send("<h1>Hello World!</h1>");
 });
 
-app.get('/api/notes', (req, res) => {
+app.get("/api/notes", (req, res) => {
+  Note.find({}).then((notes) => {
     res.json(notes);
+  });
 });
 
-app.get('/api/notes/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const note = notes.find(note => note.id === id);
-    if (note) {
-        res.json(note);
-    } else {
+app.get("/api/notes/:id", (req, res, next) => {
+  const { id } = req.params;
+
+  Note.findById(id)
+    .then((note) => {
+      if (note) {
+        return res.json(note);
+      } else {
         res.status(404).end();
-    }
+      }
+    })
+    .catch(error => next(error));
 });
 
-app.delete('/api/notes/:id', (req, res) => {
-    const id = Number(req.params.id);
-    notes = notes.filter(note => note.id !== id);
-    res.status(204).end();
+app.put("/api/notes/:id", (req, res, next) => {
+  const { id } = req.params;
+  const note = req.body;
+
+  const newNoteInfo = {
+    content: note.content,
+    important: note.important,
+  };
+
+  Note.findByIdAndUpdate(id, newNoteInfo, { new: true })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => next(error));
 });
 
-app.post('/api/notes', (req, res) => {
-    const note = req.body;
+app.delete("/api/notes/:id", (req, res, next) => {
+  const { id } = req.params;
 
-    if (!note || !note.content) {
-        return res.status(400).json({
-            error: 'note.content is missing'
-        });
-    }
-
-    const ids = notes.map(note => note.id);
-    const maxId = Math.max(...ids);
-    const newNote = {
-        id: maxId + 1,
-        content: note.content,
-        important: typeof note.important !== 'undefined' ? note.important : false,
-        date: new Date().toISOString()
-    };
-    
-    // notes = notes.concat(newNote);
-    notes = [...notes, newNote];
-       
-    res.status(201).json(newNote);
+  Note.findByIdAndDelete(id)
+    .then(() => res.status(204).end())
+    .catch((error) => next(error));
 });
 
-app.use((req, res) => {
-    res.status(404).json({
-        error: 'Not found'
+app.post("/api/notes", (req, res) => {
+  const note = req.body;
+
+  if (!note || !note.content) {
+    return res.status(400).json({
+      error: "note.content is missing",
     });
+  }
+
+  const newNote = new Note({
+    content: note.content,
+    date: new Date(),
+    important: note.important || false,
+  });
+
+  newNote.save().then((savedNote) => {
+    res.json(savedNote);
+  });
 });
 
-const PORT = process.env.PORT || 3001
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.use(notFound);
+
+app.use(handleErrors);
+
+const PORT = process.env.PORT;
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = {app, server}

@@ -4,10 +4,11 @@
   "description": "Desarrollo de Backend Siguiendo curso de FullStack Open",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "lint": "eslint .",
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "lint": "npm run lint .",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --silent",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Julian Simon",
   "license": "MIT",
@@ -15,12 +16,20 @@
     "@eslint/js": "^9.19.0",
     "eslint": "^9.19.0",
     "globals": "^15.14.0",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
-    "standard": "^17.1.2"
+    "standard": "^17.1.2",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "backendfullstackopen": "file:",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
