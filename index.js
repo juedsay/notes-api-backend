@@ -16,14 +16,13 @@ app.use(cors());
 app.use(logger);
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello World!</h1>");
+  res.send("<h1>Home Sweet Home</h1>");
 });
 
-app.get("/api/notes", (req, res) => {
-  Note.find({}).then((notes) => {
+app.get("/api/notes", async (req, res) => {
+  const notes = await Note.find({})
     res.json(notes);
   });
-});
 
 app.get("/api/notes/:id", (req, res, next) => {
   const { id } = req.params;
