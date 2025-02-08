@@ -20,9 +20,9 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/notes", async (req, res) => {
-  const notes = await Note.find({})
-    res.json(notes);
-  });
+  const notes = await Note.find({});
+  res.json(notes);
+});
 
 app.get("/api/notes/:id", (req, res, next) => {
   const { id } = req.params;
@@ -35,7 +35,7 @@ app.get("/api/notes/:id", (req, res, next) => {
         res.status(404).end();
       }
     })
-    .catch(error => next(error));
+    .catch((error) => next(error));
 });
 
 app.put("/api/notes/:id", (req, res, next) => {
@@ -62,7 +62,7 @@ app.delete("/api/notes/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-app.post("/api/notes", (req, res) => {
+app.post("/api/notes", async (req, res) => {
   const note = req.body;
 
   if (!note || !note.content) {
@@ -77,9 +77,18 @@ app.post("/api/notes", (req, res) => {
     important: note.important || false,
   });
 
-  newNote.save().then((savedNote) => {
+  //   newNote.save().then((savedNote) => {
+  //     res.json(savedNote);
+  //   });
+
+  try {
+    const savedNote = await newNote.save();
     res.json(savedNote);
-  });
+    
+  } catch (error) {
+    next(error);    
+  };
+  
 });
 
 app.use(notFound);
@@ -91,4 +100,4 @@ const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-module.exports = {app, server}
+module.exports = { app, server };
