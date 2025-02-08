@@ -43,7 +43,7 @@ npm run test
 * Website: https://www.linkedin.com/in/juedsay/
 * Twitter: [@https:\/\/x.com\/juedsaytv](https://twitter.com/https:\/\/x.com\/juedsaytv)
 * Github: [@juedsay](https://github.com/juedsay)
-* LinkedIn: [@https:\/\/www.linkedin.com\/in\/juedsay\/](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/juedsay\/)
+* LinkedIn: [@juedsay](https://linkedin.com/in/https:\/\/www.linkedin.com\/in\/juedsay\/)
 
 ## 🤝 Contributing
 
@@ -61,6 +61,3 @@ Give a ⭐️ if this project helped you!
 
 Copyright © 2025 [Julian Simon](https://github.com/juedsay).<br />
 This project is [MIT](https://github.com/juedsay/notes-api-backend/blob/main/LICENSE) licensed.
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
