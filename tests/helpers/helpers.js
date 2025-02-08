@@ -15,6 +15,16 @@ const initialNotes = [
         content: 'juedsay Practica de testing 02',
         important: false,
         date: new Date()
+    },
+    {
+        content: 'juedsay Practica de testing 03',
+        important: true,
+        date: new Date()
+    },
+    {
+        content: 'juedsay Practica de testing 04',
+        important: true,
+        date: new Date()
     }
 ];
 const getAllContentFromNotes = async () => {

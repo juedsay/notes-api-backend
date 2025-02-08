@@ -9,6 +9,7 @@ const Note = require("./models/Note");
 const logger = require("./loggerMiddleware");
 const notFound = require("./middleware/notFound");
 const handleErrors = require("./middleware/handleErrors");
+const { default: mongoose } = require("mongoose");
 
 app.use(express.json()); // Para realizar el parseo de los datos en formato JSON
 
@@ -54,12 +55,23 @@ app.put("/api/notes/:id", (req, res, next) => {
     .catch((error) => next(error));
 });
 
-app.delete("/api/notes/:id", (req, res, next) => {
-  const { id } = req.params;
+app.delete("/api/notes/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-  Note.findByIdAndDelete(id)
-    .then(() => res.status(204).end())
-    .catch((error) => next(error));
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: 'Invalid ID format'});
+    }
+
+    const note = await Note.findByIdAndDelete(id);
+    if (!note) {
+      return res.status(404).json({ error: 'Note not found'});
+    }
+
+    res.status(204).end()    
+  } catch (error) {
+    next(error);    
+  };
 });
 
 app.post("/api/notes", async (req, res) => {
@@ -88,7 +100,7 @@ app.post("/api/notes", async (req, res) => {
   } catch (error) {
     next(error);    
   };
-  
+
 });
 
 app.use(notFound);
