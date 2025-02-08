@@ -1,12 +1,12 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/Note')
 
-notesRouter.get('/api/notes', async (req, res) => {
+notesRouter.get('/', async (req, res) => {
     const notes = await Note.find({});
     res.json(notes);
 });
 
-notesRouter.get('/api/notes/:id', async (req, res, next) => {
+notesRouter.get('/:id', async (req, res, next) => {
     const { id } = req.params;
   
     Note.findById(id)
@@ -20,7 +20,7 @@ notesRouter.get('/api/notes/:id', async (req, res, next) => {
       .catch((error) => next(error));
   });
 
-  notesRouter.put("/api/notes/:id", async (req, res, next) => {
+  notesRouter.put("/:id", async (req, res, next) => {
     const { id } = req.params;
     const note = req.body;
   
@@ -36,7 +36,7 @@ notesRouter.get('/api/notes/:id', async (req, res, next) => {
       .catch((error) => next(error));
   })
 
-  notesRouter.delete("/api/notes/:id", async (req, res, next) => {
+  notesRouter.delete("/:id", async (req, res, next) => {
     try {
       const { id } = req.params;
   
@@ -55,7 +55,7 @@ notesRouter.get('/api/notes/:id', async (req, res, next) => {
     };
   });
 
-  notesRouter.post("/api/notes", async (req, res) => {
+  notesRouter.post("/", async (req, res) => {
     const note = req.body;
   
     if (!note || !note.content) {

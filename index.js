@@ -9,10 +9,11 @@ const Note = require("./models/Note");
 const logger = require("./loggerMiddleware");
 const notFound = require("./middleware/notFound");
 const handleErrors = require("./middleware/handleErrors");
-const { default: mongoose } = require("mongoose");
+// const { default: mongoose } = require("mongoose");
 
 const usersRouter = require('./controllers/users')
-const notesRouter = require('./controllers/notes')
+const notesRouter = require('./controllers/notes');
+const loginRouter = require("./controllers/login");
 
 app.use(express.json()); // Para realizar el parseo de los datos en formato JSON
 
@@ -106,8 +107,9 @@ app.get("/", (req, res) => {
 
 // });
 
-app.use('/api/notes', notesRouter)
-app.use('/api/users', usersRouter)
+app.use('/api/notes', notesRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/login', loginRouter);
 
 app.use(notFound);
 
