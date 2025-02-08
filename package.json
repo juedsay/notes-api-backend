@@ -1,7 +1,7 @@
 {
   "name": "backendfullstackopen",
   "version": "1.0.0",
-  "description": "Desarrollo de Backend Siguiendo curso de FullStack Open",
+  "description": "Development of the backend of a notes app",
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon index.js",
