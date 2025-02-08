@@ -14,5 +14,5 @@ mongoose
   });
 
   process.on('uncaughtException', () => {
-    mongoose.connection.disconnect()
+    mongoose.connection.close()
   });

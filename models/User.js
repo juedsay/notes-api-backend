@@ -1,10 +1,11 @@
 const { Schema, model } = require("mongoose");
-const uniqueValidator = require('mongoose-unique-validator')
+const handleDuplicateError = require("../middleware/handleDuplicateError");
 
 const userSchema = new Schema({
   username: {
     type: String,
-    unique: true
+    unique: true, // Ensures that the field is always unique
+    required: true,
   },
   name: String,
   passwordHash: String,
@@ -16,18 +17,20 @@ const userSchema = new Schema({
   ],
 });
 
+// Middleware for handling duplicate key errors imported
+userSchema.post("save", handleDuplicateError);
+
 userSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
     delete returnedObject.__v;
-
-    delete returnedObject.passwordHash
+    delete returnedObject.passwordHash;
   },
 });
 
-userSchema.plugin(uniqueValidator);
+const User = model("User", userSchema);
 
-const User = model('User', userSchema);
+module.exports = User;
 
 module.exports = User;

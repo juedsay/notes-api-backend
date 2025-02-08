@@ -51,15 +51,15 @@ describe("Creating a new user", () => {
       .expect(409)
       .expect("Content-Type", /application\/json/);
 
-    expect(result.body.error).toContain('expected `username` to be unique');
+    expect(result.body.error).toContain("expected `username` to be unique");
 
-    const userAtEnd = await getUsers()
-    expect(userAtEnd).toHaveLength(userAtStart.length)
+    const userAtEnd = await getUsers();
+    expect(userAtEnd).toHaveLength(userAtStart.length);
   });
 
-  afterAll(() =>{
-    mongoose.connection.close();
-    server.close();
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await server.close();
   });
   
 });
