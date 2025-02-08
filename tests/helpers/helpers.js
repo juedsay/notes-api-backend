@@ -17,8 +17,13 @@ const initialNotes = [
         date: new Date()
     }
 ];
+const getAllContentFromNotes = async () => {
+    const res = await api.get('/api/notes')
+    return res.body.map(note => note.content)    
+};
 
 module.exports = {
     api,
+    getAllContentFromNotes,
     initialNotes
 };
