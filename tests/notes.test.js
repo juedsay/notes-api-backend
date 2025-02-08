@@ -40,14 +40,14 @@ test("First note must contain juedsay word", async () => {
 });
 
 test("Any note must contain juedsay word", async () => {
-  const contents = getAllContentFromNotes()
+  const { contents, res } = await getAllContentFromNotes();
   expect(contents).toEqual(
     expect.arrayContaining([expect.stringMatching(/juedsay/)])
   );
 });
 
 test("Any note must contain...", async () => {
-  const contents = getAllContentFromNotes()
+  const { contents, res } = await getAllContentFromNotes();
   expect(contents).toContain("juedsay Practica de testing 02");
 });
 
@@ -76,7 +76,7 @@ test("a valid note can be added", async () => {
     .expect("Content-type", /application\/json/);
 
   //Validating a newNote was created successfully, calling a service to get all created notes
-  const contents = getAllContentFromNotes();
+  const { contents, res } = await getAllContentFromNotes();
 
   expect(res.body).toHaveLength(initialNotes.length + 1);
   expect(contents).toContain(newNote.content);

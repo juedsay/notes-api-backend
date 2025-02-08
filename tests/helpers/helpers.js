@@ -1,4 +1,4 @@
-const { app } = require('../index')
+const { app } = require('../../index')
 
 const supertest = require('supertest')
 
@@ -19,7 +19,10 @@ const initialNotes = [
 ];
 const getAllContentFromNotes = async () => {
     const res = await api.get('/api/notes')
-    return res.body.map(note => note.content)    
+    return {
+        contents: res.body.map(note => note.content),
+        res
+    } 
 };
 
 module.exports = {
