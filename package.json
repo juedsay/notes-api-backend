@@ -1,5 +1,5 @@
 {
-  "name": "backendfullstackopen",
+  "name": "nodejsbackend",
   "version": "1.0.0",
   "description": "Development of the backend of a notes app",
   "main": "index.js",
@@ -27,7 +27,8 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mongoose": "^8.10.0"
+    "mongoose": "^8.10.0",
+    "nodejsbackend": "file:"
   },
   "jest": {
     "testEnvironment": "node"
