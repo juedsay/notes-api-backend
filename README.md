@@ -7,8 +7,8 @@
   <a href="https://github.com/juedsay/notes-api-backend/blob/main/LICENSE" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
-  <a href="https://twitter.com/https:\/\/x.com\/juedsaytv" target="_blank">
-    <img alt="Twitter: https:\/\/x.com\/juedsaytv" src="https://img.shields.io/twitter/follow/https:\/\/x.com\/juedsaytv.svg?style=social" />
+  <a href="https:\/\/x.com\/juedsaytv" target="_blank">
+    <img alt="Twitter: juedsaytv" src="https://img.shields.io/twitter/follow/juedsaytv.svg?style=social" />
   </a>
 </p>
 
