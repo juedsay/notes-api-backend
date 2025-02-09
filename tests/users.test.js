@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const { api, getUsers } = require("./helpers");
+const { api, getUsers } = require("./helpers/helpers");
 const mongoose = require("mongoose");
 const { server } = require("../index");
 
@@ -58,7 +58,7 @@ describe("Creating a new user", () => {
   });
 
   afterAll(async () => {
-    await mongoose.disconnect();
+    await mongoose.connection.close();
     await server.close();
   });
   
