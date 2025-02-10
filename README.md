@@ -26,14 +26,28 @@ npm install
 
 ## Usage
 
+<strong> Develop ENV:</strong>
+
 ```sh
 npm run dev
 ```
+
+<strong> Production ENV:</strong>
+
+```sh
+npm run start
+```
+
 
 ## Run tests
 
 ```sh
 npm run test
+```
+<strong> or:</strong>
+
+```sh
+npm run test:watch
 ```
 
 ## Author
