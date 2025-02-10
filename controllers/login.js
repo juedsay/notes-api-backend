@@ -5,9 +5,9 @@ const User = require("../models/User");
 
 loginRouter.post("/", async (req, res) => {
   const { body } = req;
-  const { username, email, password } = body;
+  const { username, password } = body;
 
-  const user = await User.findOne({ username, email });
+  const user = await User.findOne({ username });
 
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
@@ -30,7 +30,6 @@ loginRouter.post("/", async (req, res) => {
   res.send({
     name: user.name,
     username: user.username,
-    // email: user.email,
     token
   });
 });
