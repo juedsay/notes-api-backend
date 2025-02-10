@@ -19,20 +19,5 @@ const noteSchema = new Schema({
   });
 
   const Note = model("Note", noteSchema);
-
-  // const note = new Note({
-  //   content: "Mongo DB first Note",
-  //   date: new Date(),
-  //   important: true,
-  // });
-  
-//   note.save()
-//     .then((result) => {
-//       console.log(result);
-//       mongoose.connection.close();
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
   
   module.exports = Note;

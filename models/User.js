@@ -1,5 +1,5 @@
-const { Schema, model, mongoose } = require("mongoose");
-const handleDuplicateError = require("../middleware/handleDuplicateError");
+const { Schema, model } = require("mongoose");
+// const handleErrors = require("../middleware/handleErrors");
 
 const userSchema = new Schema({
   username: {
