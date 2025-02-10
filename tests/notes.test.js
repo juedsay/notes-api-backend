@@ -138,5 +138,5 @@ describe("DELETE notes", () => {
 
 afterAll(async () => {
   await mongoose.connection.close()
-  await server.close();
+  server.close();
 });

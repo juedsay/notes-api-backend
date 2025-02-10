@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const { server } = require("../index");
 
 describe("Creating a new user", () => {
-  beforeEach(async () => {
+  
+  beforeAll(async () => {
     await User.deleteMany({});
 
     const passwordHash = await bcrypt.hash("pswd", 10);
@@ -14,14 +15,15 @@ describe("Creating a new user", () => {
     await user.save();
   });
 
-  test("works as expected creating a fresh username", async () => {
+  test("Works as expected creating a fresh username", async () => {
     const userAtStart = await getUsers();
 
     const newUser = {
-      username: "juadmin",
+      username: "pepitotest",
       name: "Julian",
       password: "p1234",
     };
+
     await api
       .post("/api/users")
       .send(newUser)
@@ -36,11 +38,11 @@ describe("Creating a new user", () => {
     expect(usernames).toContain(newUser.username);
   });
 
-  test("creation fails with proper statuscode and message if username is alrady taken", async () => {
+  test("Creation fails with proper statuscode and message if username is alrady taken", async () => {
     const userAtStart = await getUsers();
 
     const newUser = {
-      username: "juadmin",
+      username: "pepitotest",
       name: "Julian Test",
       password: "test1234",
     };
@@ -51,15 +53,59 @@ describe("Creating a new user", () => {
       .expect(409)
       .expect("Content-Type", /application\/json/);
 
-    expect(result.body.error).toContain("expected `username` to be unique");
+    expect(result.body.error).toContain("Expected `username` to be unique");
 
     const userAtEnd = await getUsers();
     expect(userAtEnd).toHaveLength(userAtStart.length);
   });
 
+  test("Creation fails with appropriate status code and message if the username is already in use and is case sensitive", async () => {
+    const userAtStart = await getUsers();
+
+    const newUser = {
+      username: "PePitoTest",
+      name: "Julian Test",
+      password: "test1234",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(409)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("Expected `username` to be unique");
+
+    const userAtEnd = await getUsers();
+    expect(userAtEnd).toHaveLength(userAtStart.length);
+  });
+
+  test("Creation fails with appropriate status code and message if username attempts to create a user with blank spaces", async () => {
+    const userAtStart = await getUsers();
+
+    const newUser = {
+      username: "PePito Test",
+      name: "Julian Test",
+      password: "test1234",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain("Username cannot contain spaces");
+
+    const userAtEnd = await getUsers();
+    expect(userAtEnd).toHaveLength(userAtStart.length);
+  });
+
+  //**TODO: Create and adapt test, for new users with email
+  //**TODO: Create test, for update users with email and without email
+
   afterAll(async () => {
     await mongoose.connection.close();
-    await server.close();
-  });
-  
+    server.close();
+  });  
 });
