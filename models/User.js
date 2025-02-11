@@ -10,21 +10,20 @@ const userSchema = new Schema({
       validator: function (v) {
         return (
           !/\s/.test(v) && // No permite espacios
-          !/[&=_'<>+,-]/.test(v) && // No permite caracteres prohibidos
+          !/[&=_'<>+,-]/.test(v) && // No permite caracteres especiales prohibidos
           !/\.\./.test(v) // No permite dos puntos seguidos
         );
       },
       message:
         "Username cannot contain spaces or special characters (&, =, _, ', -, <, >, +, ,, .., tildes).",
     },
-    email: {
-      type: String,
-      required: false,
-      unique: true,
-      lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, "Invalid email format"], // Expresión regular para validar emails
-    },
-    unique: true // Ensures that the field is always unique
+  },
+  email: {
+    type: String,
+    required: false,
+    unique: true,  // Asegura que el email sea único
+    lowercase: true,
+    match: [/^\S+@\S+\.\S+$/, "Invalid email format"], // Validación del formato del email
   },
   name: String,
   passwordHash: String,
@@ -35,7 +34,6 @@ const userSchema = new Schema({
     },
   ],
 });
-
 // Middleware for handling duplicate key errors imported
 // userSchema.post("save", handleDuplicateError);
 
