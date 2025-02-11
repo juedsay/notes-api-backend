@@ -1,6 +1,8 @@
 const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
 const User = require("../models/User");
+const errorHandler = require('../middleware/handleErrors')
+
 
 usersRouter.get("/", async (req, res) => {
   const users = await User.find({}).populate("notes", {
@@ -14,12 +16,12 @@ usersRouter.post("/", async (req, res) => {
   try {
     const { username, email, name, password } = req.body;
 
-    // ✅ Validación de datos requeridos
+    // Validation of required data
     if (!username || !email || !password) {
       return res.status(400).json({ error: "Username, email, and password are required" });
     }
 
-    // ✅ Validación del username
+    // Username validation
     if (/\s/.test(username)) {
       return res.status(400).json({ error: "Username cannot contain spaces" });
     }
@@ -30,17 +32,17 @@ usersRouter.post("/", async (req, res) => {
       return res.status(400).json({ error: "Username cannot contain two or more consecutive dots." });
     }
 
-    // ✅ Validación del email
+    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    // ✅ Normalización (evitar duplicados por mayúsculas/minúsculas)
+    // Normalization (avoid duplicates due to upper/lower case)
     const normalizedUsername = username.toLowerCase();
     const normalizedEmail = email.toLowerCase();
 
-    // ✅ Verificar existencia de username o email
+    // Verify the existence of username or email
     const existingUser = await User.findOne({ 
       $or: [{ username: normalizedUsername }, { email: normalizedEmail }] 
     });
@@ -54,11 +56,11 @@ usersRouter.post("/", async (req, res) => {
       }
     }
 
-    // ✅ Hash de contraseña
+    // Password Hash
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
-    // ✅ Crear y guardar usuario
+    // Create and save user
     const user = new User({
       username: normalizedUsername,
       email: normalizedEmail,
@@ -69,12 +71,10 @@ usersRouter.post("/", async (req, res) => {
     const savedUser = await user.save();
     res.status(201).json(savedUser);
   } catch (error) {
-    // ✅ Manejo de errores más claro
-    if (error.code === 11000) {
-      return res.status(409).json({ error: "Username or email already exists" });
-    }
-    res.status(500).json({ error: "Internal server error" });
+    next(error);
   }
 });
+
+usersRouter.use(errorHandler);
 
 module.exports = usersRouter;

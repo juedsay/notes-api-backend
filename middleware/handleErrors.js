@@ -15,6 +15,13 @@ const ERROR_HANDLERS = {
     res.status(500).json({ error: "Database error" });
   },
 
+  ValidationErrorMongo: (res, error) => {
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ error: 'Validation failed: ' + error.message });
+    }
+    res.status(500).json({ error: "Database error" });
+  },
+
   defaultError: (res, error) => {
     console.error(error.name);
     res.status(500).end();
